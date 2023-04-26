@@ -9,31 +9,33 @@ async function main(params) {
 
     if (params.address === "") {
         ContractFactory = await ethers.getContractFactory(params.name)
-        console.log("Deploying contract...")
+        console.log("🚀 Deploying contract... 🚀")
         contract = await ContractFactory.deploy(params.args)
         await contract.deployed()
     } else {
-        console.log("Getting deployed contract...")
+        console.log("🚀 Getting deployed contract... 🚀")
 
         ContractFactory = await ethers.getContractFactory(params.name)
         contract = ContractFactory.attach(params.address)
     }
 
-    console.log(`Deployed contract to: ${contract.address}`)
+    console.log(`✨ Deployed contract to: ${contract.address} ✨`)
 
     if (network.config.chainId !== 31337 && process.env.ETHERSCAN_API_KEY) {
         if (params.verify) {
             if (!params.address) {
-                console.log("Waiting for block confirmations...")
+                console.log("📝 Waiting for block confirmations... 📝")
                 await contract.deployTransaction.wait(3)
             }
             await verify(contract.address, params.args)
         }
     }
+
+    console.log("✨ All done !! ✨");
 }
 
 const verify = async (contractAddress, args) => {
-    console.log("Verifying contract...")
+    console.log("📝Verifying contract... 📝")
     try {
         await run("verify:verify", {
             address: contractAddress,
@@ -49,7 +51,7 @@ const verify = async (contractAddress, args) => {
 }
 
 const params = {
-    name: "SidouxToken",
+    name: "Token",
     address: "",
     args: [],
     verify: true,
