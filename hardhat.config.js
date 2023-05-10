@@ -4,6 +4,8 @@ require("./tasks/block-number")
 require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config()
 require("solidity-coverage")
+require("@nomiclabs/hardhat-ganache");
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 /**
@@ -40,9 +42,13 @@ module.exports = {
       accounts: [PRIVATE_KEY],
       chainId: 80001,
     },
-    localhost: {
+    lh: {
       url: "http://127.0.0.1:8545/",
       chainId: 31337,
+    },
+    gnc: {
+      url: "http://127.0.0.1:7545/",
+      chainId: 1337,
     },
   },
   solidity: "0.8.8",
