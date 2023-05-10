@@ -20,7 +20,7 @@ async function minting() {
 
     const tx = await token
         .connect(minter)
-        .mint(ethers.utils.parseUnits("1000000000", "ether"))
+        .mint(ethers.utils.parseUnits("1000", "ether"))
     await tx.wait()
 
     // Mint 100 USDT for each account

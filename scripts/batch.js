@@ -3,7 +3,7 @@ const { ethers } = require("hardhat")
 const chalk = require("chalk")
 
 // get transaction from db and change status to processing
-async function getTransactions() {
+async function getTransactionsAndUpdateDB() {
     const contents = fs.readFileSync("transactions.json", "utf8")
     const transactions = JSON.parse(contents).txList
     const contractAddress = JSON.parse(contents).contractAddress
@@ -48,7 +48,7 @@ async function mint(
     ContractFactory = await ethers.getContractFactory("Token")
     token = ContractFactory.attach(contractAddress)
     let totalTokenSent = 0
-
+    const totalBefore = await token.balanceOf(minter.address)
     for (const transaction of transactions) {
         if (validatedHash.includes(transaction.hash)) {
             try {
@@ -56,7 +56,7 @@ async function mint(
                     .connect(minter)
                     .transfer(
                         transaction.from,
-                        transaction.tokenAmount.toString()
+                        ethers.utils.parseUnits(transaction.tokenAmount.toString(), "ether")
                     )
                 const txReceipt = await transferToken.wait()
                 totalTokenSent += transaction.tokenAmount
@@ -79,9 +79,18 @@ async function mint(
     console.log(validatedHash)
     console.log("notvalidatedHash")
     console.log(notvalidatedHash)
+    console.log('totalBefore')
+    console.log(totalBefore)
+    console.log('totalTokenSent')
+    console.log(totalTokenSent)
+
+    const totalAfter = await token.balanceOf(minter.address)
+    console.log('totalAfter')
+    console.log(totalAfter)
+
 }
 async function batch(minter) {
-    const { transactions, contractAddress } = await getTransactions()
+    const { transactions, contractAddress } = await getTransactionsAndUpdateDB()
 
     const { validatedHash, notvalidatedHash } = await validateTransactionData(
         transactions
