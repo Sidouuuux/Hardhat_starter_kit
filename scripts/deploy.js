@@ -4,34 +4,38 @@ const { ethers, run, network } = require("hardhat")
 // async main
 async function main(params) {
     let ContractFactory
-    let contract
-    let admin
+    let contractUSDT
+    let contractUSDC
+    let contractBUSD
 
-    if (params.address === "") {
-        ContractFactory = await ethers.getContractFactory(params.name)
-        console.log("🚀 Deploying contract... 🚀")
-        contract = await ContractFactory.deploy(params.args)
-        await contract.deployed()
-    } else {
-        console.log("🚀 Getting deployed contract... 🚀")
+    ContractFactory = await ethers.getContractFactory(params.name)
 
-        ContractFactory = await ethers.getContractFactory(params.name)
-        contract = ContractFactory.attach(params.address)
-    }
+    console.log("🚀 Deploying StableUSDT... 🚀")
+    contractUSDT = await ContractFactory.deploy("StableUSDT", "USDT")
+    await contractUSDT.deployed()
 
-    console.log(`✨ Deployed contract to: ${contract.address} ✨`)
+    console.log("🚀 Deploying StableUSDC... 🚀")
+    contractUSDC = await ContractFactory.deploy("StableUSDC", "USDC")
+    await contractUSDC.deployed()
+    console.log("🚀 Deploying StableBUSD... 🚀")
 
-    if (network.config.chainId !== 31337 && process.env.ETHERSCAN_API_KEY) {
-        if (params.verify) {
-            if (!params.address) {
-                console.log("📝 Waiting for block confirmations... 📝")
-                await contract.deployTransaction.wait(3)
-            }
-            await verify(contract.address, params.args)
-        }
-    }
+    contractBUSD = await ContractFactory.deploy("StableBUSD", "BUSD")
+    await contractBUSD.deployed()
 
-    console.log("✨ All done !! ✨");
+    console.log(`✨ Deployed contractUSDT to: ${contractUSDT.address} ✨`)
+    console.log(`✨ Deployed contractUSDC to: ${contractUSDC.address} ✨`)
+    console.log(`✨ Deployed contractBUSD to: ${contractBUSD.address} ✨`)
+
+    const txcontractUSDT = await contractUSDT.mint(100000000000000000000n)
+    await txcontractUSDT.wait()
+
+    const txcontractUSDC = await contractUSDC.mint(10000000000000000000n)
+    await txcontractUSDC.wait()
+
+    const txcontractBUSD = await contractBUSD.mint(1000000000000000000n)
+    await txcontractBUSD.wait()
+
+    console.log("✨ All done !! ✨")
 }
 
 const verify = async (contractAddress, args) => {

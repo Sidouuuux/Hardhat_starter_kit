@@ -10,35 +10,14 @@ require("solidity-coverage")
  * @type import('hardhat/config').HardhatUserConfig
  */
 
-const { COINMARKETCAP_API_KEY, BSC_RPC_URL, SEPOLIA_RPC_URL, MUMBAI_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
-const apiKeys = {
-  COINMARKETCAP_API_KEY: COINMARKETCAP_API_KEY || "",
-  BSC_RPC_URL: BSC_RPC_URL || "",
-  SEPOLIA_RPC_URL: SEPOLIA_RPC_URL || "",
-  MUMBAI_RPC_URL: MUMBAI_RPC_URL || "",
-  PRIVATE_KEY: PRIVATE_KEY || "",
-  ETHERSCAN_API_KEY: ETHERSCAN_API_KEY || ""
-};
-
-
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
-    bsc: {
-      url: apiKeys.BSC_RPC_URL,
-      accounts: [PRIVATE_KEY],
-      chainId: 97,
-    },
-    sepolia: {
-      url: apiKeys.SEPOLIA_RPC_URL,
-      accounts: [PRIVATE_KEY],
-      chainId: 11155111,
-    },
-    mumbai: {
-      url: apiKeys.SEPOLIA_RPC_URL,
-      accounts: [PRIVATE_KEY],
-      chainId: 80001,
+    ha: {
+      url: "http://127.0.0.1:8540/",
+      accounts: ['0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e'],
+      chainId: 31337,
     },
     localhost: {
       url: "http://127.0.0.1:8545/",
@@ -46,14 +25,4 @@ module.exports = {
     },
   },
   solidity: "0.8.8",
-  etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
-  },
-  gasReporter: {
-    enabled: true,
-    currency: "USD",
-    outputFile: "gas-report.txt",
-    noColors: true,
-    coinmarketcap: COINMARKETCAP_API_KEY,
-  },
 }
