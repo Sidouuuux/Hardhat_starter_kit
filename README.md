@@ -36,6 +36,13 @@ npx hardhat test
 npx hardhat coverage
 ```
 
+## Generate Documentation 💸
+
+You can generate documemtation by adding NatSpecs to your contract and run:
+
+```
+npx hardhat docgen
+```
 ## Estimate gas 💸
 
 You can estimate how much gas things cost by running:
