@@ -87,6 +87,12 @@ module.exports = {
       polygon: POLYGONSCAN_API_KEY,
     },
   },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
+  },
   gasReporter: {
     enabled: REPORT_GAS,
     currency: "USD",
